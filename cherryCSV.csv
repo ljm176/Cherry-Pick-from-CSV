@@ -1,0 +1,7 @@
+source slot; source well; destination slot; destination well; volume
+1;A3;1;A1;20
+3;B6;3;B1;42
+3;C2;3;C1;40
+3;E4;3;D1;23
+3;H2;3;E1;19
+2;E5;2;F1;19
