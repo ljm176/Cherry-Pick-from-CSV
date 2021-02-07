@@ -3,7 +3,7 @@
 ## Description
 This repository contains the code for protocol generation from a CSV to a cherry picking protocol for the Opentrons OT2
 
-##Usage
+## Usage
 
 From the terminal run: 
 
