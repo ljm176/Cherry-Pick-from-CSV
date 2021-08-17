@@ -1,0 +1,39 @@
+
+metadata = {
+    'protocolName': '384 Cherrypicking Transfer',
+    'author': 'Lachlan',
+    'source': 'Custom Protocol Request',
+    'apiLevel': '2.2'
+}
+
+def run(protocol):
+    #Load Tips
+    tips20= [protocol.load_labware('opentrons_96_tiprack_20ul', slot) for slot in [7, 9, 10, 11]]
+
+
+    #Load Pipettes
+    p20Single = protocol.load_instrument('p20_single_gen2', 'right', tip_racks=tips20)
+
+    source_plate =  "mce_384"
+    dest_plate = "echo_384_pp_standard"
+    
+    def load_labware(ind, plate):
+        occupied_slots = [transfer_step[ind] for transfer_step in t_list]
+        loaded= []
+        for slot in occupied_slots:
+            if slot not in loaded:
+                protocol.load_labware(plate, str(slot))
+                loaded.append(slot)
+            
+    load_labware(0, source_plate)
+    load_labware(2, dest_plate)       
+    
+    def pick(l):
+        source_plate, source_well, dest_plate, dest_well, vol = l
+        source = protocol.loaded_labwares[int(source_plate)].wells_by_name()[source_well]
+        dest = protocol.loaded_labwares[int(dest_plate)].wells_by_name()[dest_well]
+        p20Single.transfer(float(vol), source, dest)
+    
+    for transfers in t_list:
+        pick(transfers)
+    
